@@ -29,8 +29,9 @@
  * OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var canvas = document.getElementById('canvas'),
-    context = canvas.getContext('2d');
+// canvas 默认大小为 300 x 150
+const canvas = document.getElementById('canvas');
+const context = canvas.getContext("2d");
    
 context.font = '38pt Arial';
 context.fillStyle = 'cornflowerblue';
