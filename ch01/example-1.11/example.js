@@ -113,9 +113,13 @@ snapshotButton.onclick = function (e) {
    var dataUrl;
 
    if (snapshotButton.value === 'Take snapshot') {
+
+      // 生成 base64 的 DataURL
+      // 格式类型为：data:image/png;base64,dssadasd
       dataUrl = canvas.toDataURL();
       clearInterval(loop);
       snapshotImageElement.src = dataUrl;
+
       snapshotImageElement.style.display = 'inline';
       canvas.style.display = 'none';
       snapshotButton.value = 'Return to Canvas';

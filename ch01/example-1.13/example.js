@@ -90,6 +90,7 @@ function drawHands() {
    drawHand(date.getSeconds(), false, 0.2);
 }
 
+// canvas display 为 none（离屏），只显示 data image
 function updateClockImage() {
    dataUrl = canvas.toDataURL();
    snapshotImageElement.src = dataUrl;
