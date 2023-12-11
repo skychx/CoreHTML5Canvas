@@ -354,8 +354,10 @@ function drawPolygon(polygon, angle) {
 
    context.save();
 
+   // 移动中心点
    context.translate(tx, ty);
 
+   // 有角度就旋转
    if (angle) {
       context.rotate(angle);
    }
@@ -372,6 +374,7 @@ function drawPolygon(polygon, angle) {
 
    context.restore();
 
+   // 恢复坐标
    polygon.x = tx;
    polygon.y = ty;
 }

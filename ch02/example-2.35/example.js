@@ -48,6 +48,7 @@ function drawText() {
    context.restore();
 }
 
+// 设置剪辑区域为 radius 为半径的中心圆
 function setClippingRegion(radius) {
    context.beginPath();
    context.arc(canvas.width/2, canvas.height/2,
@@ -60,6 +61,7 @@ function fillCanvas(color) {
    context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+// 动画结束 1s 后重新绘制文字（复原）
 function endAnimation(loop) {
    clearInterval(loop);
 
@@ -71,7 +73,7 @@ function endAnimation(loop) {
 
 function drawAnimationFrame(radius) {
    setClippingRegion(radius);
-   fillCanvas('lightgray');
+   fillCanvas('red');
    drawText();
 }
 
@@ -79,13 +81,16 @@ function animate() {
    var radius = canvas.width/2,
        loop;
 
+   // 帧率动画
    loop = window.setInterval(function() {
       radius -= canvas.width/100;
 
-      fillCanvas('charcoal');
+      // 1.先用绿色填充整个 canvas
+      fillCanvas('green');
 
       if (radius > 0) {
          context.save();
+         // 2.先设置剪切区域，然后设置剪切区域的背景色，并绘制文字
          drawAnimationFrame(radius);
          context.restore();
       }

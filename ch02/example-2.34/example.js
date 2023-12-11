@@ -164,70 +164,74 @@ function drawGuidewires(x, y) {
 // Eraser........................................................
 
 function setDrawPathForEraser(loc) {
-   var eraserWidth = parseFloat(eraserWidthSelect.value);
-   
-   context.beginPath();
+  var eraserWidth = parseFloat(eraserWidthSelect.value);
 
-   if (eraserShapeSelect.value === 'circle') {
-      context.arc(loc.x, loc.y,
-                  eraserWidth/2,
-                  0, Math.PI*2, false);
-   }
-   else {
-      context.rect(loc.x - eraserWidth/2,
-                   loc.y - eraserWidth/2,
-                   eraserWidth, eraserWidth);
-   }
-   context.clip();
+  context.beginPath();
+
+  if (eraserShapeSelect.value === "circle") {
+    context.arc(loc.x, loc.y, eraserWidth / 2, 0, Math.PI * 2, false);
+  } else {
+    context.rect(
+      loc.x - eraserWidth / 2,
+      loc.y - eraserWidth / 2,
+      eraserWidth,
+      eraserWidth
+    );
+  }
+  context.clip();
 }
 
 function setErasePathForEraser() {
-   var eraserWidth = parseFloat(eraserWidthSelect.value);
-   
-   context.beginPath();
+  var eraserWidth = parseFloat(eraserWidthSelect.value);
 
-   if (eraserShapeSelect.value === 'circle') {
-      context.arc(lastX, lastY,
-                  eraserWidth/2 + ERASER_LINE_WIDTH,
-                  0, Math.PI*2, false);
-   }
-   else {
-      context.rect(lastX - eraserWidth/2 - ERASER_LINE_WIDTH,
-                   lastY - eraserWidth/2 - ERASER_LINE_WIDTH,
-                   eraserWidth + ERASER_LINE_WIDTH*2,
-                   eraserWidth + ERASER_LINE_WIDTH*2);
-   }
-   context.clip();
+  context.beginPath();
+
+  if (eraserShapeSelect.value === "circle") {
+    context.arc(
+      lastX,
+      lastY,
+      eraserWidth / 2 + ERASER_LINE_WIDTH,
+      0,
+      Math.PI * 2,
+      false
+    );
+  } else {
+    context.rect(
+      lastX - eraserWidth / 2 - ERASER_LINE_WIDTH,
+      lastY - eraserWidth / 2 - ERASER_LINE_WIDTH,
+      eraserWidth + ERASER_LINE_WIDTH * 2,
+      eraserWidth + ERASER_LINE_WIDTH * 2
+    );
+  }
+  context.clip();
 }
 
 function setEraserAttributes() {
-  context.lineWidth     = ERASER_LINE_WIDTH;
-  context.shadowColor   = ERASER_SHADOW_STYLE;
-  context.shadowOffsetX = ERASER_SHADOW_OFFSET; 
+  context.lineWidth = ERASER_LINE_WIDTH;
+  context.shadowColor = ERASER_SHADOW_STYLE;
+  context.shadowOffsetX = ERASER_SHADOW_OFFSET;
   context.shadowOffsetY = ERASER_SHADOW_OFFSET;
-  context.shadowBlur    = ERASER_SHADOW_BLUR;
-  context.strokeStyle   = ERASER_STROKE_STYLE;
+  context.shadowBlur = ERASER_SHADOW_BLUR;
+  context.strokeStyle = ERASER_STROKE_STYLE;
 }
 
 function eraseLast() {
-   context.save();
+  context.save();
 
-   setErasePathForEraser();
-   drawGrid(GRID_LINE_COLOR,
-            GRID_HORIZONTAL_SPACING,
-            GRID_VERTICAL_SPACING);
+  setErasePathForEraser();
+  drawGrid(GRID_LINE_COLOR, GRID_HORIZONTAL_SPACING, GRID_VERTICAL_SPACING);
 
-   context.restore();
+  context.restore();
 }
 
 function drawEraser(loc) {
-   context.save();
+  context.save();
 
-   setEraserAttributes();     
-   setDrawPathForEraser(loc);
-   context.stroke();
+  setEraserAttributes();
+  setDrawPathForEraser(loc);
+  context.stroke();
 
-   context.restore();
+  context.restore();
 }
 
 // Canvas event handlers.........................................

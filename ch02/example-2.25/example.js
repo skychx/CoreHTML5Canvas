@@ -119,6 +119,7 @@ function updateRubberbandRectangle(loc) {
    else                     rubberbandRect.top = loc.y;
 } 
 
+// 多边形顶点数组
 function getPolygonPoints(centerX, centerY, radius, sides, startAngle) {
    var points = [],
        angle = startAngle || 0;
@@ -132,6 +133,7 @@ function getPolygonPoints(centerX, centerY, radius, sides, startAngle) {
    return points;
 }
 
+// 多边形路径
 function createPolygonPath(centerX, centerY, radius, sides, startAngle) {
    var points = getPolygonPoints(centerX, centerY, radius, sides, startAngle);
 

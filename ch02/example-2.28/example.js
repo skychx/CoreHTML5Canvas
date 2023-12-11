@@ -214,14 +214,16 @@ canvas.onmousedown = function (e) {
 
    if (editing) {
      polygons.forEach( function (polygon) {
-        polygon.createPath(context);
-        if (context.isPointInPath(loc.x, loc.y)) {
-           startDragging(loc);
-           dragging = polygon;
-           draggingOffsetX = loc.x - polygon.x;
-           draggingOffsetY = loc.y - polygon.y;
-           return;
-        }
+       polygon.createPath(context);
+       // 判断一个点在不在路径内
+       // https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/isPointInPath
+       if (context.isPointInPath(loc.x, loc.y)) {
+         startDragging(loc);
+         dragging = polygon;
+         draggingOffsetX = loc.x - polygon.x;
+         draggingOffsetY = loc.y - polygon.y;
+         return;
+       }
      });
    }
    else {
