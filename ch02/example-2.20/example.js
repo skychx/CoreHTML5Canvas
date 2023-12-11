@@ -4,7 +4,7 @@
  *
  * License:
  *
- * Permission is hereby granted, free of charge, to any person 
+ * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation files
  * (the "Software"), to deal in the Software without restriction,
  * including without limitation the rights to use, copy, modify, merge,
@@ -27,51 +27,76 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
-var context = document.getElementById('canvas').getContext('2d');
+var context = document.getElementById("canvas").getContext("2d");
 
+// 这个只画了 4 个圆角，但是因为依次画的，所以 4 个圆角互相连接，构成圆角矩形
 function roundedRect(cornerX, cornerY, width, height, cornerRadius) {
-   if (width > 0) context.moveTo(cornerX + cornerRadius, cornerY);
-   else           context.moveTo(cornerX - cornerRadius, cornerY);
+  if (width > 0) {
+    context.moveTo(cornerX + cornerRadius, cornerY);
+  } else {
+    context.moveTo(cornerX - cornerRadius, cornerY);
+  }
 
-   context.arcTo(cornerX + width, cornerY,
-                 cornerX + width, cornerY + height,
-                 cornerRadius);
+  context.arcTo(
+    cornerX + width,
+    cornerY,
+    cornerX + width,
+    cornerY + height,
+    cornerRadius
+  );
 
-   context.arcTo(cornerX + width, cornerY + height,
-                 cornerX, cornerY + height,
-                 cornerRadius);
+  context.arcTo(
+    cornerX + width,
+    cornerY + height,
+    cornerX,
+    cornerY + height,
+    cornerRadius
+  );
 
-   context.arcTo(cornerX, cornerY + height,
-                 cornerX, cornerY,
-                 cornerRadius);
+  context.arcTo(cornerX, cornerY + height, cornerX, cornerY, cornerRadius);
 
-   if (width > 0) {
-      context.arcTo(cornerX, cornerY,
-                    cornerX + cornerRadius, cornerY,
-                    cornerRadius);
-   }
-   else {
-      context.arcTo(cornerX, cornerY,
-                    cornerX - cornerRadius, cornerY,
-                    cornerRadius);
-   }
+  if (width > 0) {
+    context.arcTo(
+      cornerX,
+      cornerY,
+      cornerX + cornerRadius,
+      cornerY,
+      cornerRadius
+    );
+  } else {
+    context.arcTo(
+      cornerX,
+      cornerY,
+      cornerX - cornerRadius,
+      cornerY,
+      cornerRadius
+    );
+  }
 }
 
-function drawRoundedRect(strokeStyle, fillStyle, cornerX, cornerY, width, height, cornerRadius) {
-   context.beginPath();
+function drawRoundedRect(
+  strokeStyle,
+  fillStyle,
+  cornerX,
+  cornerY,
+  width,
+  height,
+  cornerRadius
+) {
+  context.beginPath();
 
-   roundedRect(cornerX, cornerY, width, height, cornerRadius);
-   
-   context.strokeStyle = strokeStyle;
-   context.fillStyle = fillStyle;
+  roundedRect(cornerX, cornerY, width, height, cornerRadius);
 
-   context.stroke();
-   context.fill();
+  context.strokeStyle = strokeStyle;
+  context.fillStyle = fillStyle;
+
+  context.stroke();
+  context.fill();
 }
 
-drawRoundedRect('blue',   'yellow',  50,  40,  100,  100, 10);
-drawRoundedRect('purple', 'green',  275,  40, -100,  100, 20);
-drawRoundedRect('red',    'white',  300, 140,  100, -100, 30);
-drawRoundedRect('white',  'blue',   525, 140, -100, -100, 40);
+drawRoundedRect("blue", "yellow", 50, 40, 100, 100, 10);
+drawRoundedRect("purple", "green", 275, 40, -100, 100, 20);
+drawRoundedRect("red", "white", 300, 140, 100, -100, 30);
+drawRoundedRect("white", "blue", 525, 140, -100, -100, 40);

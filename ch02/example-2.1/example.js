@@ -33,6 +33,7 @@ var canvas = document.getElementById('canvas'),
     context = canvas.getContext('2d');
 
 context.lineWidth = 30;
+context.lineJoin = 'round';
 
 context.font = '24px Helvetica';
 context.fillText('Click anywhere to erase', 175, 40);

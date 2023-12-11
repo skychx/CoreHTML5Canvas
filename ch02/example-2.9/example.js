@@ -78,6 +78,7 @@ context.fillText('Stroke & Fill', 650, 110);
 // Rectangles.........................................................
 
 context.lineWidth = '5';       // line width set to 5 for shapes
+
 context.beginPath();
 context.rect(80, 150, 150, 100);
 context.stroke();
@@ -110,7 +111,7 @@ context.fill();
 
 context.beginPath();
 context.arc(150, 550, 60, 0, Math.PI*3/2);
-context.closePath();
+context.closePath(); // 这里主动调用 close
 context.stroke();
 
 context.beginPath();

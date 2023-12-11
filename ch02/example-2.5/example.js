@@ -38,11 +38,12 @@ var canvas = document.getElementById('canvas'),
     image = new Image();
 
 function fillCanvasWithPattern(repeatString) {
-   var pattern = context.createPattern(image, repeatString);
-   context.clearRect(0, 0, canvas.width, canvas.height);
-   context.fillStyle = pattern;
-   context.fillRect(0, 0, canvas.width, canvas.height);
-   context.fill();
+  // https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/createPattern
+  var pattern = context.createPattern(image, repeatString);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = pattern;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.fill();
 };
 
 repeatRadio.onclick = function (e) {

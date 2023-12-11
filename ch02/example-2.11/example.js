@@ -58,6 +58,8 @@ function drawGrid(color, stepx, stepy) {
    context.restore();
 }
 
+// 这个 demo 主要是利用 “非零环绕规则”
+// 通过添加子路径的方式，绘制镂空效果
 function draw() {
    context.clearRect(0, 0, context.canvas.width,
                            context.canvas.height);
@@ -95,6 +97,7 @@ function strokeCutoutShapes() {
    addOuterRectanglePath(); // CW
    context.stroke();
 
+   // 描边前先清除子路径
    context.beginPath();
    addCirclePath();
    addRectanglePath();
@@ -121,15 +124,19 @@ function rect(x, y, w, h, direction) {
   }
 }
 
+// 顺时针方向画个大矩形
 function addOuterRectanglePath() {
    context.rect(110, 25, 370, 335); 
 }
 
 function addCirclePath() {
-   context.arc(300, 300, 40, 0, Math.PI*2, true);
+  // 设置为 true 表示逆时针绘制
+  // https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/arc#anticlockwise
+  context.arc(300, 300, 40, 0, Math.PI * 2, true);
 }
 
 function addRectanglePath() {
+   // 画一个逆时针矩形
    rect(310, 55, 70, 35, true); 
 }
 

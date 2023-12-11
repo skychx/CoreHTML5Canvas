@@ -178,6 +178,6 @@ directionCheckbox.onclick = function (e) {
 // Initialization................................................
 
 context.fillStyle = 'rgba(100, 140, 230, 0.5)';
-context.strokeStyle = context.fillStyle;//'rgba(20, 60, 150, 0.5)';
+context.strokeStyle = 'red';//'rgba(20, 60, 150, 0.5)';
 
 draw(directionCheckbox.checked);

@@ -4,7 +4,7 @@
  *
  * License:
  *
- * Permission is hereby granted, free of charge, to any person 
+ * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation files
  * (the "Software"), to deal in the Software without restriction,
  * including without limitation the rights to use, copy, modify, merge,
@@ -27,170 +27,161 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-var canvas = document.getElementById('canvas'),
-    context = canvas.getContext('2d'),
-    eraseAllButton = document.getElementById('eraseAllButton'),
-    strokeStyleSelect = document.getElementById('strokeStyleSelect'),
-    guidewireCheckbox = document.getElementById('guidewireCheckbox'),
-    drawingSurfaceImageData,
-    mousedown = {},
-    rubberbandRect = {},
-    dragging = false,
-    guidewires = guidewireCheckbox.checked;
+ */
+// 一个白板工具，可以用来绘制直线
+var canvas = document.getElementById("canvas"),
+  context = canvas.getContext("2d"),
+  eraseAllButton = document.getElementById("eraseAllButton"),
+  strokeStyleSelect = document.getElementById("strokeStyleSelect"),
+  guidewireCheckbox = document.getElementById("guidewireCheckbox"),
+  drawingSurfaceImageData,
+  mousedown = {},
+  rubberbandRect = {},
+  dragging = false,
+  guidewires = guidewireCheckbox.checked;
 
 // Functions..........................................................
 
 function drawGrid(color, stepx, stepy) {
-   context.save()
+  context.save();
 
-   context.strokeStyle = color;
-   context.lineWidth = 0.5;
-   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+  context.strokeStyle = color;
+  context.lineWidth = 0.5;
+  context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-   for (var i = stepx + 0.5; i < context.canvas.width; i += stepx) {
-     context.beginPath();
-     context.moveTo(i, 0);
-     context.lineTo(i, context.canvas.height);
-     context.stroke();
-   }
+  for (var i = stepx + 0.5; i < context.canvas.width; i += stepx) {
+    context.beginPath();
+    context.moveTo(i, 0);
+    context.lineTo(i, context.canvas.height);
+    context.stroke();
+  }
 
-   for (var i = stepy + 0.5; i < context.canvas.height; i += stepy) {
-     context.beginPath();
-     context.moveTo(0, i);
-     context.lineTo(context.canvas.width, i);
-     context.stroke();
-   }
+  for (var i = stepy + 0.5; i < context.canvas.height; i += stepy) {
+    context.beginPath();
+    context.moveTo(0, i);
+    context.lineTo(context.canvas.width, i);
+    context.stroke();
+  }
 
-   context.restore();
-}
-
-function windowToCanvas(x, y) {
-   var bbox = canvas.getBoundingClientRect();
-   return { x: x - bbox.left * (canvas.width  / bbox.width),
-            y: y - bbox.top  * (canvas.height / bbox.height) };
+  context.restore();
 }
 
 // Save and restore drawing surface...................................
 
 function saveDrawingSurface() {
-   drawingSurfaceImageData = context.getImageData(0, 0,
-                             canvas.width,
-                             canvas.height);
+  drawingSurfaceImageData = context.getImageData(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
 }
 
 function restoreDrawingSurface() {
-   context.putImageData(drawingSurfaceImageData, 0, 0);
+  context.putImageData(drawingSurfaceImageData, 0, 0);
 }
 
 // Rubberbands........................................................
 
 function updateRubberbandRectangle(loc) {
-   rubberbandRect.width  = Math.abs(loc.x - mousedown.x);
-   rubberbandRect.height = Math.abs(loc.y - mousedown.y);
+  rubberbandRect.width = Math.abs(loc.x - mousedown.x);
+  rubberbandRect.height = Math.abs(loc.y - mousedown.y);
 
-   if (loc.x > mousedown.x) rubberbandRect.left = mousedown.x;
-   else                     rubberbandRect.left = loc.x;
+  if (loc.x > mousedown.x) rubberbandRect.left = mousedown.x;
+  else rubberbandRect.left = loc.x;
 
-   if (loc.y > mousedown.y) rubberbandRect.top = mousedown.y;
-   else                     rubberbandRect.top = loc.y;
+  if (loc.y > mousedown.y) rubberbandRect.top = mousedown.y;
+  else rubberbandRect.top = loc.y;
 
-   context.save();
-   context.strokeStyle = 'red';
-   context.restore();
-} 
+  context.save();
+  context.strokeStyle = "red";
+  context.restore();
+}
 
 function drawRubberbandShape(loc) {
-   context.beginPath();
-   context.moveTo(mousedown.x, mousedown.y);
-   context.lineTo(loc.x, loc.y);
-   context.stroke();
+  context.beginPath();
+  context.moveTo(mousedown.x, mousedown.y);
+  context.lineTo(loc.x, loc.y);
+  context.stroke();
 }
 
 function updateRubberband(loc) {
-   updateRubberbandRectangle(loc);
-   drawRubberbandShape(loc);
+  updateRubberbandRectangle(loc);
+  drawRubberbandShape(loc);
 }
 
 // Guidewires.........................................................
 
-function drawHorizontalLine (y) {
-   context.beginPath();
-   context.moveTo(0,y+0.5);
-   context.lineTo(context.canvas.width,y+0.5);
-   context.stroke();
+function drawHorizontalLine(y) {
+  context.beginPath();
+  context.moveTo(0, y + 0.5);
+  context.lineTo(context.canvas.width, y + 0.5);
+  context.stroke();
 }
 
-function drawVerticalLine (x) {
-   context.beginPath();
-   context.moveTo(x+0.5,0);
-   context.lineTo(x+0.5,context.canvas.height);
-   context.stroke();
+function drawVerticalLine(x) {
+  context.beginPath();
+  context.moveTo(x + 0.5, 0);
+  context.lineTo(x + 0.5, context.canvas.height);
+  context.stroke();
 }
 
 function drawGuidewires(x, y) {
-   context.save();
-   context.strokeStyle = 'rgba(0,0,230,0.4)';
-   context.lineWidth = 0.5;
-   drawVerticalLine(x);
-   drawHorizontalLine(y);
-   context.restore();
+  context.save();
+  context.strokeStyle = "rgba(0,0,230,0.4)";
+  context.lineWidth = 0.5;
+  drawVerticalLine(x);
+  drawHorizontalLine(y);
+  context.restore();
 }
 
 // Canvas event handlers..............................................
 
 canvas.onmousedown = function (e) {
-   var loc = windowToCanvas(e.clientX, e.clientY);
-   
-   e.preventDefault(); // prevent cursor change
+  e.preventDefault(); // prevent cursor change
 
-   saveDrawingSurface();
-   mousedown.x = loc.x;
-   mousedown.y = loc.y;
-   dragging = true;
+  saveDrawingSurface();
+  mousedown.x = e.offsetX;
+  mousedown.y = e.offsetY;
+  dragging = true;
 };
 
 canvas.onmousemove = function (e) {
-   var loc; 
+  if (dragging) {
+    e.preventDefault(); // prevent selections
 
-   if (dragging) {
-      e.preventDefault(); // prevent selections
+    restoreDrawingSurface();
+    updateRubberband({ x: e.offsetX, y: e.offsetY });
 
-      loc = windowToCanvas(e.clientX, e.clientY);
-      restoreDrawingSurface();
-      updateRubberband(loc);
-
-      if(guidewires) {
-         drawGuidewires(loc.x, loc.y);
-      }
-   }
+    if (guidewires) {
+      drawGuidewires(e.offsetX, e.offsetY);
+    }
+  }
 };
 
 canvas.onmouseup = function (e) {
-   loc = windowToCanvas(e.clientX, e.clientY);
-   restoreDrawingSurface();
-   updateRubberband(loc);
-   dragging = false;
+  restoreDrawingSurface();
+  updateRubberband({ x: e.offsetX, y: e.offsetY });
+  dragging = false;
 };
 
 // Controls event handlers.......................................
 
 eraseAllButton.onclick = function (e) {
-   context.clearRect(0, 0, canvas.width, canvas.height);
-   drawGrid('lightgray', 10, 10);
-   saveDrawingSurface(); 
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  drawGrid("lightgray", 10, 10);
+  saveDrawingSurface();
 };
 
 strokeStyleSelect.onchange = function (e) {
-   context.strokeStyle = strokeStyleSelect.value;
+  context.strokeStyle = strokeStyleSelect.value;
 };
 
 guidewireCheckbox.onchange = function (e) {
-   guidewires = guidewireCheckbox.checked;
+  guidewires = guidewireCheckbox.checked;
 };
 
 // Initialization................................................
 
 context.strokeStyle = strokeStyleSelect.value;
-drawGrid('lightgray', 10, 10);
+drawGrid("lightgray", 10, 10);

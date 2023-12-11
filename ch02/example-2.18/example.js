@@ -40,6 +40,7 @@ CanvasRenderingContext2D.prototype.moveTo = function (x, y) {
    this.lastMoveToLocation.y = y;
 };
 
+// 其实在我看来这种挂到原型链上的设计并不好
 CanvasRenderingContext2D.prototype.dashedLineTo = function (x, y, dashLength) {
    dashLength = dashLength === undefined ? 5 : dashLength;
 
